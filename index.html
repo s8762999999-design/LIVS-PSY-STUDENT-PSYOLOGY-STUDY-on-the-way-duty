@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校園危機處遇實戰室</title>
+    <style>
+        :root {
+            --primary-blue: #1e3a5f;
+            --soft-green: #e6f4ea;
+            --alert-orange: #ff9800;
+            --crisis-red: #d32f2f;
+            --text-dark: #333;
+            --bg-light: #f5f7fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .instructor-toggle {
+            margin-top: 15px;
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        nav {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav li a {
+            display: block;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        nav li a:hover {
+            background-color: var(--soft-green);
+        }
+
+        .disclaimer {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffeeba;
+            padding: 12px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .section-divider {
+            border: 0;
+            height: 2px;
+            background: #ddd;
+            margin: 40px 0;
+        }
+
+        .course-title {
+            text-align: center;
+            color: var(--crisis-red);
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .interactive-module {
+            background: var(--card-bg);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        .scenario-box {
+            background: var(--bg-light);
+            padding: 15px;
+            border-left: 4px solid var(--alert-orange);
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-option {
+            background: #fff;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .btn-option:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-action {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--soft-green);
+            border-radius: 6px;
+            animation: fadeIn 0.5s;
+        }
+
+        .instructor-notes {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff9c4;
+            border-left: 4px solid #fbc02d;
+            font-size: 0.95em;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .role-dropdown {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            max-width: 300px;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        .task-list li {
+            margin-bottom: 8px;
+        }
+
+        .quote-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .quote-card {
+            margin-top: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--primary-blue), #2c5282);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .quote-card blockquote {
+            font-size: 1.5em;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        .traffic-light { display: grid; gap: 10px; }
+        .traffic-light .light { padding: 15px; border-radius: 4px; color: #000; }
+        .green { background-color: #c8e6c9; border-left: 8px solid #4caf50; }
+        .yellow { background-color: #fff9c4; border-left: 8px solid #ffeb3b; }
+        .orange { background-color: #ffe0b2; border-left: 8px solid #ff9800; }
+        .red { background-color: #ffcdd2; border-left: 8px solid #f44336; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>特殊狀況同學在衝突發生前的降級策略與應對方法</h1>
+            <p>第一節課：理論與框架 ｜ 第二節課：校園危機情境實戰演練</p>
+            <div class="instructor-toggle">
+                <label>
+                    <input type="checkbox" id="instructor-mode-toggle"> 👨‍🏫 開啟講師/備課模式
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <nav aria-label="Main Navigation">
+        <div class="container">
+            <ul>
+                <li><a href="#theory">第一節課：理論與燈號</a></li>
+                <li><a href="#module1">實戰 1：30秒辨識</a></li>
+                <li><a href="#module2">實戰 2：第一句話</a></li>
+                <li><a href="#module3">實戰 3：角色切換</a></li>
+                <li><a href="#module4">實戰 4：資訊斷片協作</a></li>
+                <li><a href="#module5">實戰 5：復盤與總結</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="disclaimer">
+            <strong>⚠️ 專業聲明：</strong> 本網站案例為教育情境模擬。系統結果並非心理診斷或暴力預測，實際危機請依現場情況、學校 SOP 及主管機關最新規範處理。
+        </div>
+
+        <!-- 理論回顧 -->
+        <section id="theory">
+            <h2>第一節課：降級理論與危險徵兆回顧</h2>
+            <div class="traffic-light">
+                <div class="light green"><strong>🟢 正常/抱怨 (低風險)</strong><br>傾聽需求，維持正向支持。</div>
+                <div class="light yellow"><strong>🟡 明顯激動/走動 (中風險)</strong><br>注意警訊，降低刺激，減少要求。</div>
+                <div class="light orange"><strong>🟠 威脅言語/摔物 (中高風險)</strong><br>停止說理，保持距離，啟動校內通報。</div>
+                <div class="light red"><strong>🔴 自傷/他傷明確計畫 (極高風險)</strong><br>優先疏散，立即啟動緊急應變與法定通報。</div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+        <h2 class="course-title">🔥 第二節課：校園危機情境實戰室</h2>
+        <p class="subtitle">「不是考你會不會回答，而是練習你在現場會怎麼做。」</p>
+
+        <!-- 實戰 1：30秒辨識 -->
+        <section id="module1" class="interactive-module">
+            <h2>實戰 1：30 秒，你看到了什麼？</h2>
+            <div class="scenario-box">
+                <p><strong>情境：</strong> 某高中學生在課堂中突然提高音量，反覆說：「你們每次都這樣。」將筆丟在桌上。老師請他坐下，但他開始來回走動，現場已有其他學生開始注意。</p>
+            </div>
+            <div class="question-box">
+                <p>這目前比較接近哪一種狀態？</p>
+                <div class="options-grid" id="q1-options">
+                    <button class="btn-option" onclick="handleAnswer('q1', 'A')">🟢 正常壓力反應</button>
+                    <button class="btn-option" onclick="handleAnswer('q1', 'B')">🟡 早期警訊 / 情緒升高</button>
+                    <button class="btn-option" onclick="handleAnswer('q1', 'C')">🔴 立即安全危機</button>
+                </div>
+            </div>
+            <div id="q1-result" class="result-box hidden">
+                <h3 id="q1-title"></h3>
+                <p id="q1-desc"></p>
+                <div class="instructor-notes hidden">
+                    <strong>👨‍🏫 講師解析：</strong>
+                    <p>教學目的：協助區分「干擾行為」與「安全危機」。來回走動與抱怨屬於黃燈警訊，此時<strong>不應</strong>急著進入處分程序，應優先「降低環境刺激」。</p>
+                    <p>證據等級：🟢 高可信度 (符合 PBIS 與 Trauma-Informed Approach 原則)。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 實戰 2：第一句話 -->
+        <section id="module2" class="interactive-module">
+            <h2>實戰 2：你第一句會說什麼？</h2>
+            <div class="scenario-box">
+                <p><strong>情境：</strong> 學生情緒持續升溫，對著你大喊：「你根本都不懂我！」</p>
+            </div>
+            <div class="question-box">
+                <p>為了避免權力對抗，你會選擇哪一種回應？</p>
+                <div class="options-grid" id="q2-options">
+                    <button class="btn-option" onclick="handleAnswer('q2', 'A')">A. 「你先冷靜，不要再鬧了。」</button>
+                    <button class="btn-option" onclick="handleAnswer('q2', 'B')">B. 「你現在這樣已經影響其他同學了。」</button>
+                    <button class="btn-option" onclick="handleAnswer('q2', 'C')">C. 「我知道你現在很不舒服，我們先停一下。」</button>
+                    <button class="btn-option" onclick="handleAnswer('q2', 'D')">D. 「你如果不配合，我就直接送學務處處理。」</button>
+                </div>
+            </div>
+            <div id="q2-result" class="result-box hidden">
+                <h3 id="q2-title"></h3>
+                <p id="q2-desc"></p>
+                <div class="instructor-notes hidden">
+                    <strong>👨‍🏫 講師解析：</strong>
+                    <p>常見錯誤：選項 A 與 D 帶有命令與威脅，極易觸發學生的「戰鬥或逃跑」反應。選項 B 在此階段容易被解讀為指責。</p>
+                    <p>較佳選擇：C (反映式傾聽)。先接納情緒，再給予明確且中性的暫停指令。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 實戰 3：角色切換 -->
+        <section id="module3" class="interactive-module">
+            <h2>實戰 3：現在換你當別人 (角色邊界與分工)</h2>
+            <div class="scenario-box">
+                <p><strong>情境：</strong> 學生與教師爭執後開始摔東西，目前沒有攻擊他人的意圖，但現場一片混亂。</p>
+            </div>
+            <div class="question-box">
+                <p>請選擇你現在要扮演的角色：</p>
+                <select id="role-select" class="role-dropdown">
+                    <option value="">-- 請選擇角色 --</option>
+                    <option value="teacher">專任教師 (第一現場)</option>
+                    <option value="security">學務處 / 校安人員 / 教官</option>
+                    <option value="counselor">輔導老師</option>
+                    <option value="tutor">導師</option>
+                </select>
+                <button class="btn-action" onclick="showRoleTask()">確認角色</button>
+            </div>
+            <div id="role-result" class="result-box hidden">
+                <h3 id="role-title"></h3>
+                <ul id="role-desc" class="task-list"></ul>
+                <div class="instructor-notes hidden">
+                    <strong>👨‍🏫 講師解析：</strong>
+                    <p>教學目的：體驗危機處理不是一個人把事情做完。學務處負責「現場安全與通報」，輔導室負責「心理評估與減壓」，導師負責「資訊整合與家長聯繫」。若為重大危機，宜蘭地區可依法規啟動輔諮中心安心服務小組。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 實戰 4：資訊斷片 -->
+        <section id="module4" class="interactive-module">
+            <h2>實戰 4：資訊斷片協作挑戰</h2>
+            <div class="scenario-box">
+                <p>請將以下來自不同角色的資訊拼湊起來：</p>
+                <ul>
+                    <li><strong>專任老師：</strong>「學生剛在課堂上摔書包。」</li>
+                    <li><strong>導師：</strong>「他今早因為家庭衝突情緒非常低落。」</li>
+                    <li><strong>輔導老師：</strong>「他上週曾表達強烈的無望感與自傷念頭。」</li>
+                    <li><strong>校安人員：</strong>「現場走廊已經有其他班級學生開始聚集圍觀。」</li>
+                </ul>
+            </div>
+            <div class="question-box">
+                <p>基於以上完整資訊，目前的優先決策應該是什麼？</p>
+                <div class="options-grid" id="q4-options">
+                    <button class="btn-option" onclick="handleAnswer('q4', 'A')">要求學生立刻寫悔過書</button>
+                    <button class="btn-option" onclick="handleAnswer('q4', 'B')">疏散圍觀群眾，並由單一主要溝通者進行陪伴與高風險評估</button>
+                    <button class="btn-option" onclick="handleAnswer('q4', 'C')">直接強制架離學生</button>
+                </div>
+            </div>
+            <div id="q4-result" class="result-box hidden">
+                <h3 id="q4-title"></h3>
+                <p id="q4-desc"></p>
+                <div class="instructor-notes hidden">
+                    <strong>👨‍🏫 講師解析：</strong>
+                    <p>資訊整合是危機處理的關鍵。若只看「摔書包」，可能會當成一般違規；加上「自傷念頭」，則必須啟動校內緊急通報（2小時/24小時法定通報）與安全防護機制。絕對避免多人同時對學生下指令。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 實戰 5：復盤與總結 -->
+        <section id="module5" class="interactive-module">
+            <h2>實戰 5：危機復盤與「我的一句話」</h2>
+            <p>事件結束後，真正的預防才剛開始。請寫下你今天最想帶回學校實務現場的一句「降級心法」：</p>
+            <input type="text" id="user-quote" placeholder="例如：先降級，再處理責任..." class="quote-input">
+            <button class="btn-action" onclick="generateQuote()">產生我的校園危機 TIP</button>
+            
+            <div id="quote-display" class="quote-card hidden">
+                <h3>💡 我的校園危機 TIP</h3>
+                <blockquote id="final-quote"></blockquote>
+                <p class="quote-footer">- 降級策略學習者</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 講師模式切換功能
+        const instructorToggle = document.getElementById('instructor-mode-toggle');
+        instructorToggle.addEventListener('change', function() {
+            const notes = document.querySelectorAll('.instructor-notes');
+            notes.forEach(note => {
+                if (this.checked) {
+                    note.classList.remove('hidden');
+                } else {
+                    note.classList.add('hidden');
+                }
+            });
+        });
+
+        // 互動案例資料庫
+        const scenarioData = {
+            q1: {
+                A: { title: "需要再觀察", desc: "情境模擬結果：這不僅僅是正常壓力，學生已經出現來回走動與重複抱怨的「警訊行為」。" },
+                B: { title: "✅ 判斷正確：早期警訊 (Level 2-3)", desc: "情境模擬結果：你正確辨識了黃燈警訊。此時最重要的是「降低刺激」，避免連續下達指令，防止情緒進一步攀升。" },
+                C: { title: "可能過度反應", desc: "情境模擬結果：目前學生尚無攻擊或破壞行為。若直接啟動最高級別安全處置，可能會過度刺激學生。" }
+            },
+            q2: {
+                A: { title: "❌ 權力對抗發生", desc: "情境模擬結果：學生覺得被否定，可能進一步大吼或出現摔物行為。帶有命令的「冷靜」通常無效。" },
+                B: { title: "⚠️ 情緒可能升級", desc: "情境模擬結果：學生處於情緒高漲期，聽不進道德勸說，指出他影響別人只會增加他的防衛與憤怒。" },
+                C: { title: "✅ 較佳介入：反映式傾聽", desc: "情境模擬結果：學生感覺情緒被接住，雖然不一定馬上平靜，但能暫時避免行為惡化，為後續處理爭取空間。" },
+                D: { title: "❌ 嚴重升級風險", desc: "情境模擬結果：威脅處分會激發學生的戰鬥本能，極可能導致破壞物品或爆發直接衝突。" }
+            },
+            q4: {
+                A: { title: "❌ 錯誤判斷", desc: "情境模擬結果：忽視了自傷風險與現場混亂，強迫書寫將引發嚴重反抗。" },
+                B: { title: "✅ 最佳決策：降級與安全優先", desc: "情境模擬結果：成功控制現場。校安疏散人群，輔導老師接手高風險評估，導師聯繫家長，有效跨單位協作。" },
+                C: { title: "❌ 極高危險", desc: "情境模擬結果：缺乏安全防護下進行肢體強制，極易造成師生受傷，且未解決根本危機。" }
+            }
+        };
+
+        // 處理選擇題回答
+        function handleAnswer(questionId, answer) {
+            const resultBox = document.getElementById(`${questionId}-result`);
+            const titleObj = document.getElementById(`${questionId}-title`);
+            const descObj = document.getElementById(`${questionId}-desc`);
+            
+            const data = scenarioData[questionId][answer];
+            titleObj.innerText = data.title;
+            descObj.innerText = data.desc;
+            resultBox.classList.remove('hidden');
+        }
+
+        // 處理角色切換
+        function showRoleTask() {
+            const roleSelect = document.getElementById('role-select').value;
+            const resultBox = document.getElementById('role-result');
+            const titleObj = document.getElementById('role-title');
+            const descObj = document.getElementById('role-desc');
+            
+            if (!roleSelect) return;
+
+            let title = "";
+            let tasks = [];
+
+            switch(roleSelect) {
+                case 'teacher':
+                    title = "專任教師 (第一現場) 優先任務";
+                    tasks = ["1. 保持自身與班級學生的安全距離。", "2. 降低環境刺激 (請其他學生安靜或退後)。", "3. 避免與個案進行權力對抗。", "4. 派員通報學務處與輔導室。"];
+                    break;
+                case 'security':
+                    title = "學務處 / 校安人員 / 教官 優先任務";
+                    tasks = ["1. 確保現場無立即危險物品，隔離危險源。", "2. 疏散圍觀群眾，建立安全空間。", "3. 依據法規判定是否達到緊急校安通報門檻 (2小時內)。", "4. 若有失控攻擊，聯繫警政或醫療單位協處。"];
+                    break;
+                case 'counselor':
+                    title = "輔導老師 優先任務";
+                    tasks = ["1. 在環境安全前提下，進行情緒支持與降級溝通。", "2. 評估自傷/他傷之心理風險。", "3. 危機解除後進行心理減壓會談。", "4. 評估是否申請外部「安心服務小組」入校。"];
+                    break;
+                case 'tutor':
+                    title = "導師 優先任務";
+                    tasks = ["1. 提供學生背景資訊與可能觸發點，協助研判。", "2. 穩定班級其他學生情緒。", "3. 與家長進行初步聯繫與溝通。", "4. 參與後續個別化支持計畫的擬定。"];
+                    break;
+            }
+
+            titleObj.innerText = title;
+            descObj.innerHTML = tasks.map(t => `<li>${t}</li>`).join('');
+            resultBox.classList.remove('hidden');
+        }
+
+        // 產生「我的一句話」
+        function generateQuote() {
+            const input = document.getElementById('user-quote').value.trim();
+            if (input) {
+                document.getElementById('final-quote').innerText = `「${input}」`;
+                document.getElementById('quote-display').classList.remove('hidden');
+            } else {
+                alert("請先輸入您想帶回學校的一句話！");
+            }
+        }
+    </script>
+</body>
+</html>
